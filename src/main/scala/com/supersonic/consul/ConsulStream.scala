@@ -18,9 +18,18 @@ import scala.util.Try
 object ConsulStream {
 
   /** Given a Consul key, creates a [[Source]] where a new entry is added upon each update of the
-    * key (includes recursive update).
+    * key (includes recursive updates).
     *
     * Each entry contains the full set of keys that are contained under the key.
+    *
+    * @param key          The Consul key to which the resulting stream will be listening.
+    * @param consul       A Consul client instance.
+    * @param blockingTime The maximal amount to block a single request to Consul when waiting
+    *                     for a change.
+    * @return a [[Source]] that produces a value each time the key is updated (recursively). The
+    *         keys in the produced maps are the Consul keys and the values are the (optional) string
+    *         that they contain (decoded). The source materializes a [[CancellationToken]] that can
+    *         be triggered when the user of the [[Source]] want to stop polling Consul.
     */
   def consulKeySource(key: String,
                       consul: Consul,
