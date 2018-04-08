@@ -34,6 +34,7 @@ inThisBuild(List(
 
   pgpPublicRing := file("./travis/local.pubring.asc"),
   pgpSecretRing := file("./travis/local.secring.asc"),
+  releaseEarlyEnableSyncToMaven := false,
   releaseEarlyWith := BintrayPublisher
 ))
 
