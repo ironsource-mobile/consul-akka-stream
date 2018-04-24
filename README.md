@@ -10,7 +10,7 @@ Add these lines you to your SBT project:
 ```scala
 resolvers += Resolver.jcenterRepo
 
-libraryDependencies += "com.supersonic" %% "consul-akka-stream" % "1.0.1"
+libraryDependencies += "com.supersonic" %% "consul-akka-stream" % "1.0.2"
 ```
 
 ## How To
