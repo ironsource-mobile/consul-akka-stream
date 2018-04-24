@@ -24,7 +24,8 @@ lazy val root = (project in file("."))
     parallelExecution in IntegrationTest := false,
     publishArtifact in (IntegrationTest, packageBin) := true,
     // see: https://github.com/sbt/sbt/issues/2458
-    addArtifact(artifact in (IntegrationTest, packageBin), packageBin in IntegrationTest))
+    addArtifact(artifact in (IntegrationTest, packageBin), packageBin in IntegrationTest),
+    addArtifact(artifact in (IntegrationTest, packageSrc), packageSrc in IntegrationTest))
 
 inThisBuild(List(
   licenses := List("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
