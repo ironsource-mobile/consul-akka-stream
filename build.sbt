@@ -16,11 +16,9 @@ lazy val root = (project in file("."))
       "-Ywarn-value-discard",
       "-Xfuture",
       "-Xlint",
-      "-Ypartial-unification"
-    ),
+      "-Ypartial-unification"),
     libraryDependencies ++= (dependencies ++ testDependencies),
-    sources in (Compile, doc) := List.empty
-  )
+    sources in (Compile, doc) := List.empty)
   .settings(Defaults.itSettings: _*)
   .settings(
     parallelExecution in IntegrationTest := false,
@@ -37,18 +35,16 @@ inThisBuild(List(
   pgpPublicRing := file("./travis/local.pubring.asc"),
   pgpSecretRing := file("./travis/local.secring.asc"),
   releaseEarlyEnableSyncToMaven := false,
-  releaseEarlyWith := BintrayPublisher
-))
+  releaseEarlyWith := BintrayPublisher))
 
 def dependencies = List(
   "com.typesafe.akka" %% "akka-stream" % akkaVersion,
   "com.typesafe.akka" %% "akka-stream-kafka" % "0.18",
-  "com.orbitz.consul" % "consul-client" % "1.0.1"
-)
+  "com.orbitz.consul" % "consul-client" % "1.0.1")
 
 def testDependencies = List(
   "org.scalatest" %% "scalatest" % "3.0.4" % "it, test",
   "com.typesafe.akka" %% "akka-testkit" % akkaVersion % "it, test",
   "com.typesafe.akka" %% "akka-stream-testkit" % akkaVersion % "it, test",
-  "com.pszymczyk.consul" % "embedded-consul" % "1.0.1" % "it"
-)
+  "com.pszymczyk.consul" % "embedded-consul" % "1.0.1" % "it",
+  "ch.qos.logback" % "logback-classic" % "1.2.3" % "it, test")
