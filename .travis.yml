@@ -6,14 +6,25 @@ script:
 - sbt ++$TRAVIS_SCALA_VERSION test it:test
 jdk:
 - oraclejdk8
+
+stages:
+  - name: build
+  - name: publish
+    if: ((branch = master) AND (type != pull_request)) OR (tag IS present)
+
+jobs:
+  include:
+    - stage: build
+      script: sbt ++$TRAVIS_SCALA_VERSION test it:test
+    - stage: publish
+      script: sbt ++$TRAVIS_SCALA_VERSION releaseEarly;
+
 before_install:
 - if [ $TRAVIS_PULL_REQUEST = 'false' ]; then 
     openssl aes-256-cbc -K $encrypted_054593f98bbe_key -iv $encrypted_054593f98bbe_iv -in travis/secrets.tar.enc -out travis/secrets.tar -d;
     tar xv -C travis -f travis/secrets.tar; 
   fi
-after_success:
-- if [ $TRAVIS_PULL_REQUEST = 'false' ]; then sbt ++$TRAVIS_SCALA_VERSION releaseEarly;
-  fi
+
 env:
   global:
   - secure: "EahjkACzXGTrgAUVsLLZrQewDtX0UhMDOW1M+ji0/NYC+WjEsk/e/tOrncqIXR2nRKYRRL4pLJbw0bmyihQGiwED05FJugIzQSRiytdUy4CdDGsWH2KxB9S5oFfgl771FmrC5So70T2WOzffV5zBp38IVywXX8xx+bdDVP4vroNTA1rCKsTu3/r9qcWobb5Rx89X7n0scHhB4CaD08A7LeRIcx/E5A+E4N74vFtflZQTTsqzhMK8B/XxpB46scqHLOrYNYb6W6Jb0MQOrALWbZlP//qYf3A5hxElRXuD0WyK2r3LPZERXssCPmoHKSLaFKrLIBDedAQsWB1d4hd/hF/WY2mnWs6b3MCYRfx+OCfPmqSkKSL8oyxR3bHTBhvOLstDNi/PcWXeLLIirYbFUtLpm8vxyAyXK25W9Icrb/bbDXtfnMXmigMJLAqKwsFvuFt4bngDJZE5DCV1ESA8A5bGJtGZLA+6ONLR32OcmKciq5Nl0Wl6YHEl0iwm8SMxHrWF4N96nnWsVz0juCOBjVjhlfMISnSdBa3d7TzpcHNK7njK6D/YEjSuj9gvJOUYhhEvDejWrYP1FlpHMplDrKNeO0L1erw0+39uxVJD16GHnCY18PBq1MSVixI6IeOp24KFRbzLKqu5bzWdq4kGkMHsukL9Oh3WZYxu5XB/vcw="
