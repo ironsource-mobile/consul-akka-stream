@@ -18,7 +18,9 @@ lazy val root = (project in file("."))
       "-Xlint",
       "-Ypartial-unification"),
     libraryDependencies ++= (dependencies ++ testDependencies),
-    sources in (Compile, doc) := List.empty)
+    sources in (Compile, doc) := List.empty,
+    // a workaround for https://github.com/sbt/sbt/issues/1380
+    makePomConfiguration := makePomConfiguration.value.withConfigurations(Configurations.defaultMavenConfigurations))
   .settings(Defaults.itSettings: _*)
   .settings(
     parallelExecution in IntegrationTest := false,
@@ -47,5 +49,6 @@ def testDependencies = List(
   "org.scalatest" %% "scalatest" % "3.0.4" % "it, test",
   "com.typesafe.akka" %% "akka-testkit" % akkaVersion % "it, test",
   "com.typesafe.akka" %% "akka-stream-testkit" % akkaVersion % "it, test",
-  "com.pszymczyk.consul" % "embedded-consul" % "1.0.1" % "it",
+  // this shouldn't be in 'test', but we add it here so that it's possible to depend on it in other libraries
+  "com.pszymczyk.consul" % "embedded-consul" % "1.0.1" % "it, test",
   "ch.qos.logback" % "logback-classic" % "1.2.3" % "it, test")
