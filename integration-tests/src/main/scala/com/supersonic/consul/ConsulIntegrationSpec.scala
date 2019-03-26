@@ -11,7 +11,7 @@ import com.orbitz.consul.Consul
 import com.pszymczyk.consul.{ConsulProcess, ConsulStarterBuilder}
 import org.scalatest.{BeforeAndAfterAll, TestSuite}
 import scala.concurrent.ExecutionContext
-import scala.concurrent.duration.{FiniteDuration, _}
+import scala.concurrent.duration._
 
 /** A base trait for tests that need an embedded Consul instance. */
 trait ConsulIntegrationSpec extends TestSuite with BeforeAndAfterAll {

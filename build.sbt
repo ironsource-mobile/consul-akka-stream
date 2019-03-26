@@ -1,33 +1,36 @@
-val akkaVersion = "2.5.7"
+name := "consul-akka-stream-root"
 
-lazy val root = (project in file("."))
-  .configs(IntegrationTest)
-  .settings(
-    name := "consul-akka-stream",
-    organization := "com.supersonic",
-    scalaVersion := "2.12.5",
-    scalacOptions ++= Seq(
-      "-encoding", "UTF-8",
-      "-deprecation",
-      "-feature",
-      "-unchecked",
-      "-language:higherKinds",
-      "-Xfatal-warnings",
-      "-Ywarn-value-discard",
-      "-Xfuture",
-      "-Xlint",
-      "-Ypartial-unification"),
-    libraryDependencies ++= (dependencies ++ testDependencies),
-    sources in (Compile, doc) := List.empty,
-    // a workaround for https://github.com/sbt/sbt/issues/1380
-    makePomConfiguration := makePomConfiguration.value.withConfigurations(Configurations.defaultMavenConfigurations))
-  .settings(Defaults.itSettings: _*)
-  .settings(
-    parallelExecution in IntegrationTest := false,
-    publishArtifact in (IntegrationTest, packageBin) := true,
-    // see: https://github.com/sbt/sbt/issues/2458
-    addArtifact(artifact in (IntegrationTest, packageBin), packageBin in IntegrationTest),
-    addArtifact(artifact in (IntegrationTest, packageSrc), packageSrc in IntegrationTest))
+lazy val core =
+  project
+    .settings(name := "consul-akka-stream")
+    .settings(baseSettings: _*)
+    .settings(libraryDependencies ++= dependencies)
+    .settings(
+      parallelExecution in IntegrationTest := false)
+
+// this is separate project because we want to publish artifacts from it
+lazy val `integration-tests` =
+  project
+    .settings(name := "consul-akka-stream-integration-tests")
+    .settings(baseSettings: _*)
+    .settings(libraryDependencies ++= testDependencies)
+    .dependsOn(core)
+
+def baseSettings = List(
+  organization := "com.supersonic",
+  scalaVersion := "2.12.5",
+  scalacOptions ++= Seq(
+    "-encoding", "UTF-8",
+    "-deprecation",
+    "-feature",
+    "-unchecked",
+    "-language:higherKinds",
+    "-Xfatal-warnings",
+    "-Ywarn-value-discard",
+    "-Xfuture",
+    "-Xlint",
+    "-Ypartial-unification"),
+  sources in (Compile, doc) := List.empty)
 
 inThisBuild(List(
   licenses := List("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
@@ -40,15 +43,17 @@ inThisBuild(List(
   releaseEarlyEnableSyncToMaven := false,
   releaseEarlyWith := BintrayPublisher))
 
+val akkaVersion = "2.5.7"
+
 def dependencies = List(
   "com.typesafe.akka" %% "akka-stream" % akkaVersion,
   "com.typesafe.akka" %% "akka-stream-kafka" % "0.18",
   "com.orbitz.consul" % "consul-client" % "1.0.1")
 
 def testDependencies = List(
-  "org.scalatest" %% "scalatest" % "3.0.4" % "it, test",
-  "com.typesafe.akka" %% "akka-testkit" % akkaVersion % "it, test",
-  "com.typesafe.akka" %% "akka-stream-testkit" % akkaVersion % "it, test",
-  // this shouldn't be in 'test', but we add it here so that it's possible to depend on it in other libraries
-  "com.pszymczyk.consul" % "embedded-consul" % "1.0.1" % "it, test",
-  "ch.qos.logback" % "logback-classic" % "1.2.3" % "it, test")
+  // These are not marked with '% "test"' because we are publishing an artifact with them
+  "org.scalatest" %% "scalatest" % "3.0.4",
+  "com.typesafe.akka" %% "akka-testkit" % akkaVersion,
+  "com.typesafe.akka" %% "akka-stream-testkit" % akkaVersion,
+  "com.pszymczyk.consul" % "embedded-consul" % "1.0.1",
+  "ch.qos.logback" % "logback-classic" % "1.2.3")
