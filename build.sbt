@@ -1,4 +1,6 @@
 name := "consul-akka-stream-root"
+// no need to publish the root project
+publishArtifact := false
 
 lazy val core =
   project
