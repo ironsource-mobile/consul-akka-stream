@@ -19,7 +19,6 @@ lazy val `integration-tests` =
     .dependsOn(core)
 
 def baseSettings = List(
-  organization := "com.supersonic",
   scalaVersion := "2.12.5",
   scalacOptions ++= Seq(
     "-encoding", "UTF-8",
@@ -32,6 +31,7 @@ def baseSettings = List(
     "-Xfuture",
     "-Xlint",
     "-Ypartial-unification"),
+  sonatypeCredentialHost := Sonatype.sonatype01,
   Compile / doc / sources := List.empty)
 
 inThisBuild(List(
@@ -52,7 +52,6 @@ inThisBuild(List(
         "PGP_SECRET" -> "${{ secrets.PGP_SECRET }}",
         "SONATYPE_PASSWORD" -> "${{ secrets.SONATYPE_PASSWORD }}",
         "SONATYPE_USERNAME" -> "${{ secrets.SONATYPE_USERNAME }}")))))
-
 
 val akkaVersion = "2.5.7"
 
