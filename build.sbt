@@ -1,3 +1,5 @@
+import sbtghactions.RefPredicate.Equals
+
 name := "consul-akka-stream-root"
 // no need to publish the root project
 publishArtifact := false
@@ -7,8 +9,6 @@ lazy val core =
     .settings(name := "consul-akka-stream")
     .settings(baseSettings: _*)
     .settings(libraryDependencies ++= dependencies)
-    .settings(
-      parallelExecution in IntegrationTest := false)
 
 // this is separate project because we want to publish artifacts from it
 lazy val `integration-tests` =
@@ -32,18 +32,27 @@ def baseSettings = List(
     "-Xfuture",
     "-Xlint",
     "-Ypartial-unification"),
-  sources in (Compile, doc) := List.empty)
+  Compile / doc / sources := List.empty)
 
 inThisBuild(List(
-  licenses := List("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
+  organization := "com.supersonic",
   homepage := Some(url("https://github.com/SupersonicAds/consul-akka-stream")),
+  licenses := List("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
   developers := List(Developer("SupersonicAds", "SupersonicAds", "SupersonicAds", url("https://github.com/SupersonicAds"))),
-  scmInfo := Some(ScmInfo(url("https://github.com/SupersonicAds/consul-akka-stream"), "scm:git:git@github.com:SupersonicAds/consul-akka-stream.git")),
 
-  pgpPublicRing := file("./travis/local.pubring.asc"),
-  pgpSecretRing := file("./travis/local.secring.asc"),
-  releaseEarlyEnableSyncToMaven := false,
-  releaseEarlyWith := BintrayPublisher))
+  githubWorkflowPublishTargetBranches := Seq(RefPredicate.Equals(Ref.Branch("master"))),
+  githubWorkflowTargetTags ++= Seq("v*"),
+  githubWorkflowPublishTargetBranches += RefPredicate.StartsWith(Ref.Tag("v")),
+  githubWorkflowPublish := Seq(WorkflowStep.Sbt(List("ci-release"))),
+  githubWorkflowPublish := Seq(
+    WorkflowStep.Sbt(
+      List("ci-release"),
+      env = Map(
+        "PGP_PASSPHRASE" -> "${{ secrets.PGP_PASSPHRASE }}",
+        "PGP_SECRET" -> "${{ secrets.PGP_SECRET }}",
+        "SONATYPE_PASSWORD" -> "${{ secrets.SONATYPE_PASSWORD }}",
+        "SONATYPE_USERNAME" -> "${{ secrets.SONATYPE_USERNAME }}")))))
+
 
 val akkaVersion = "2.5.7"
 
