@@ -2,6 +2,6 @@ logLevel := Level.Warn
 
 resolvers += Classpaths.sbtPluginReleases
 
-addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.0.0")
+addSbtPlugin("com.geirsson" % "sbt-ci-release" % "1.5.7")
 
-addSbtPlugin("ch.epfl.scala" % "sbt-release-early" % "2.1.1")
+addSbtPlugin("com.codecommit" % "sbt-github-actions" % "0.10.1")
