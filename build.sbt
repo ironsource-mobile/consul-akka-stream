@@ -34,6 +34,7 @@ def baseSettings = List(
   sonatypeCredentialHost := Sonatype.sonatype01,
   Compile / doc / sources := List.empty)
 
+sonatypeCredentialHost := Sonatype.sonatype01
 inThisBuild(List(
   organization := "com.supersonic",
   homepage := Some(url("https://github.com/SupersonicAds/consul-akka-stream")),
