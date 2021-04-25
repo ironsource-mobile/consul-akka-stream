@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/SupersonicAds/consul-akka-stream.svg?branch=master)](https://travis-ci.org/SupersonicAds/consul-akka-stream) [![Download](https://api.bintray.com/packages/ironsonic/maven/consul-akka-stream/images/download.svg) ](https://bintray.com/ironsonic/maven/consul-akka-stream/_latestVersion)
+[![Build Status](https://github.com/SupersonicAds/consul-akka-stream/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/SupersonicAds/consul-akka-stream/actions?query=branch%3Amaster)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.supersonic/consul-akka-stream_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.supersonic/consul-akka-stream_2.12)
 
 # consul-akka-stream
 
@@ -10,7 +11,7 @@ Add these lines you to your SBT project:
 ```scala
 resolvers += Resolver.jcenterRepo
 
-libraryDependencies += "com.supersonic" %% "consul-akka-stream" % "1.1.0"
+libraryDependencies += "com.supersonic" %% "consul-akka-stream" % "1.1.2"
 ```
 
 ## How To
