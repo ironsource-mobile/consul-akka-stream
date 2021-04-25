@@ -9,8 +9,6 @@
 
 Add these lines you to your SBT project:
 ```scala
-resolvers += Resolver.jcenterRepo
-
 libraryDependencies += "com.supersonic" %% "consul-akka-stream" % "1.1.2"
 ```
 
@@ -52,7 +50,7 @@ The library provides a trait that facilitates testing the Consul stream (with Sc
 
 To obtain the trait, add the following to your SBT project:
 ```scala
-libraryDependencies += "com.supersonic" %% "consul-akka-stream-integration-tests" % "1.1.0" % "it"
+libraryDependencies += "com.supersonic" %% "consul-akka-stream-integration-tests" % "1.1.2" % "it"
 ```
 
 And mixin the [`ConsulIntegrationSpec`](https://github.com/SupersonicAds/consul-akka-stream/blob/master/src/it/scala/com/supersonic/consul/ConsulIntegrationSpec.scala) trait into your test.
