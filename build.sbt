@@ -41,10 +41,8 @@ inThisBuild(List(
   licenses := List("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
   developers := List(Developer("SupersonicAds", "SupersonicAds", "SupersonicAds", url("https://github.com/SupersonicAds"))),
 
-  githubWorkflowPublishTargetBranches := Seq(RefPredicate.Equals(Ref.Branch("master"))),
+  githubWorkflowPublishTargetBranches := Seq(RefPredicate.StartsWith(Ref.Tag("v"))),
   githubWorkflowTargetTags ++= Seq("v*"),
-  githubWorkflowPublishTargetBranches += RefPredicate.StartsWith(Ref.Tag("v")),
-  githubWorkflowPublish := Seq(WorkflowStep.Sbt(List("ci-release"))),
   githubWorkflowPublish := Seq(
     WorkflowStep.Sbt(
       List("ci-release"),
